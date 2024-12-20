@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--font Awesome-->
+       <script
+      src="https://kit.fontawesome.com/576f0d94a2.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <link rel="stylesheet" href="../../css/style.css" />
+        <link rel="stylesheet" href="../../css/admin.css" />
+
+    <!--CUSTOM STYLING-->
+
+    <title>Admin Section - Manage Topics</title>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <h1 class="logo-text"><span>Orumba-</span>media</h1>
+      </div>
+      <i class="fa-solid fa-bars menu-toggle"></i>
+      <ul class="nav">
+        <li>
+          <a href="#">
+            <i class="fa-solid fa-user"></i>
+            Taurus tech
+            <i class="fa-solid fa-caret-down" style="font-size: .8em"></i>
+          </a>
+          </i>
+          <ul>
+            <!-- <li><a href="#">Dash-board</a></li> -->
+            <li><a class="logout" href="#">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </header>
+
+    <!-- PAGE WRAPPER -->
+     <div class="admin-wrapper">
+      <!-- left sidebar -->
+      <div class="left-sidebar">
+        <ul>
+          <li><a href="../posts/index.html">Manage Post</a></li>
+          <li><a href="../users/index.html">Manage Users</a></li>
+          <li><a href="index.html">Manage Topics</a></li>
+        </ul>
+      </div>
+      <!-- left sidebar end -->
+       <!-- Admin content -->
+        <div class="admin-content">
+          <div class="button-group">
+            <a href="create.html" class="btn btn-big">Add Topic</a>
+            <a href="index.html" class="btn btn-big">Manage Topics</a>
+          </div>
+
+
+          <div class="content">
+            <h2 class="page-tittle ">Manage Topics</h2>
+            <table>
+              <thead>
+                <th>SN</th>
+                <th>Name</th>
+                <th> Author</th>
+                <th colspan="2">Action</th>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Poetry</td>
+                  <td><a href="#" class="edit">edit</a></td>
+                  <td><a href="#" class="delete">delete</a></td>
+                </tr>
+
+                <tr>
+                  <td>2</td>
+                  <td>Life Lessons</td>
+                  <td><a href="#" class="edit">edit</a></td>
+                  <td><a href="#" class="delete">delete</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- Admin content end -->
+    </div>
+
+
+
+
+
+
+    <!-- JQUERY -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- CUSTOM SCRIPT -->
+    <script src="../../js/script.js"></script>
+  </body>
+</html>

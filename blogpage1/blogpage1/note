@@ -1,0 +1,88 @@
+@media only screen and (max-width: 750px) { header { position: relative; }
+header ul { width: 100%; background-color: teal; max-height: 0px; overflow:
+hidden; } header ul li { width: 100%; } header ul li ul { position: static;
+display: block; width: 100%; /* background: inherit; */ } header ul li ul li a {
+padding: 10px; background: teal; color: black; padding-left: 50px; } header ul
+li ul li a:hover { background: darkolivegreen; } header ul li ul li a.logout {
+color: red; } header .menu-toggle { /* height: 100%; */ width: 10%; display:
+block; position: absolute; right: 20px; top: 20px; font-size: 0.9em; border: 1px
+solid red; } header .logo { margin-left: 0.8em; /* border: 1px solid red; */ }
+header .logo-text { font-size: 20px; margin: 9px; font-family: 'candal', serif;
+} header .logo-text span { color: #879091; } } /* */ /* CONTENT */
+<!-- <div class="main-content">
+  <h1 class="recent-post-tittle">RECENT POST</h1>
+  <div class="post">
+    <img src="images/webimg1.jpg" alt="" class="post-image">
+    <div class="post-preview">
+      <h2><a href="single.html">The strongest and sweetest songs are yet to be sung</a></h2>
+              <i class="fa-solid fa-user">Orumba-Media</i>
+              <i class="fa-solid fa-calendar">Nov 26, 2024</i>
+              <p class="preview-text">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                Aperiam recusandae qui explicabo aspernatur ea sint?
+              </p>
+              <a href="single.html" class="btn read-more ">Read More</a>
+    </div>
+  </div>
+
+  <div class="post">
+    <img src="images/webimg1.jpg" alt="" class="post-image">
+    <div class="post-preview">
+      <h2><a href="single.html">The strongest and sweetest songs are yet to be sung</a></h2>
+              <i class="fa-solid fa-user">Orumba-Media</i>
+              <i class="fa-solid fa-calendar">Nov 26, 2024</i>
+              <p class="preview-text">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                Aperiam recusandae qui explicabo aspernatur ea sint?
+              </p>
+              <a href="single.html" class="btn read-more ">Read More</a>
+    </div>
+  </div>
+
+  <div class="post">
+    <img src="images/webimg1.jpg" alt="" class="post-image">
+    <div class="post-preview">
+      <h2><a href="single.html">The strongest and sweetest songs are yet to be sung</a></h2>
+              <i class="fa-solid fa-user">Orumba-Media</i>
+              <i class="fa-solid fa-calendar">Nov 26, 2024</i>
+              <p class="preview-text">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                Aperiam recusandae qui explicabo aspernatur ea sint?
+              </p>
+              <a href="single.html" class="btn read-more ">Read More</a>
+    </div>
+  </div>
+
+ </div> -->
+
+/* CONTENT */ header { position: relative; } header ul { width: 100%;
+background: teal; max-height: 0px; overflow: hidden; /* background: red; */ /*
+list-style: none; */ /* border: 1px solid red; */ } .showing { max-height:
+100em; } header ul li { width: 100%; } header ul li ul { position: static;
+display: block; width: 100%; padding-left: 50px; } header ul li ul li a {
+background: rgb(31, 214, 190); } header ul li ul li a .logout { color: red;
+background: rgb(31, 214, 190); } header .menu-toggle { position: absolute;
+display: block; right: 10px; top: 20px; font-size: 1.9em; /* border: 2px solid
+red; */ } header .logo { margin-left: 0.8em; /* border: 1px solid red; */ }
+/////////// ///////////////////////////////////////////////////////////////
+header { position: relative; } header ul { width: 100%; background: teal;
+max-height: 0px; overflow: hidden; /* background: red; */ /* list-style: none;
+*/ /* border: 1px solid red; */ } .showing { max-height: 100em; } header ul li {
+width: 100%; } header ul li ul { position: static; display: block; width: 100%;
+padding-left: 50px; } header ul li ul li a { background: rgb(31, 214, 190); }
+header ul li ul li a .logout { color: red; background: rgb(31, 214, 190); }
+header .menu-toggle { position: absolute; display: block; right: 10px; top:
+20px; font-size: 1.9em; /* border: 2px solid red; */ } header .logo {
+margin-left: 0.8em; /* border: 1px solid red; */ }
+//////////////////////////////////////////////////////////////////// @media only
+screen and (max-width: 780px) { header { position: relative; } .auth-content {
+width: 70%; } .main-content-wrapper { padding: 10px; /* background: red; */ }
+header ul { width: 100%; background: teal; max-height: 0px; overflow: hidden; /*
+background: red; */ /* list-style: none; */ /* border: 1px solid red; */ }
+.showing { max-height: 100em; } header ul li { width: 100%; } header ul li ul {
+position: static; display: block; width: 100%; padding-left: 50px; } header ul
+li ul li a { background: rgb(31, 214, 190); } header ul li ul li a .logout {
+color: red; background: rgb(31, 214, 190); } header .menu-toggle { position:
+absolute; display: block; right: 10px; top: 20px; font-size: 1.9em; /* border:
+2px solid red; */ } header .logo { margin-left: 0.8em; /* border: 1px solid red;
+*/ } }

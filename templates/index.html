@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--font Awesome-->
+       <script
+      src="https://kit.fontawesome.com/576f0d94a2.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- <link
+      rel="stylesheet"
+      href="https://path/to/font-awesome/css/font-awesome.min.css"
+    /> -->
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+
+    <!--CUSTOM STYLING-->
+
+    <title>Blog</title>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <h1 class="logo-text"><span>Orumba-</span>media</h1>
+      </div>
+      <i class="fa-solid fa-bars menu-toggle"></i>
+      <ul class="nav">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">History</a></li>
+        <li>
+          <a href="#">Services</a>
+          <ul style="left: 0px">
+            <li><a href="#">Wed-dev</a></li>
+            <li><a href="#">Magazine</a></li>
+            <li><a href="#">CCTV installation</a></li>
+            <!-- <li><a href="#"></a></li> -->
+
+          </ul>
+        </li>
+        <!-- <li><a href="#">Sign-Up</a></li>
+        <li><a href="#">Log-In</a></li> -->
+        <!-- if you want to create a drop down menu study from line 45 -53 and css styling.................. but for this code copy thesame line after studying and paste on the place you wanta dropdown in the header -->
+        <li>
+          
+          <a href="#">
+            <i class="fa-solid fa-user"></i>
+            Taurus tech
+            <i class="fa-solid fa-caret-down" style="font-size: .8em"></i>
+          </a>
+          </i>
+          <ul>
+            <li><a href="./admin/posts/index.html">Dash-board</a></li>
+            <li><a class="logout" href="#">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </header>
+
+    <!-- PAGE WRAPPER -->
+     <div class="page-wrapper">
+      <div class="post-slider">
+        <h1 class="slider-tittle">
+          TRENDING POST
+        </h1>
+<!--        <i class="fa-solid fa-chevron-left prev"></i>-->
+<!--        <i class="fa-solid fa-chevron-right next"></i>-->
+
+<!--        <div class="post-wrapper">-->
+<!--          <div class="post">-->
+<!--            <img src="images/webimg1.jpg" alt="" class="slider-image">-->
+<!--            <div class="post-info">-->
+<!--              <h4><a href="single.html">One day your life will flash before your eyes</a></h4>-->
+<!--              <i class="fa-solid fa-user">Orumba-Media</i>-->
+<!--              <i class="fa-solid fa-calendar">Nov 26, 2044</i>-->
+<!--            </div>-->
+<!--            -->
+<!--          </div>-->
+<!--              <div class="post">-->
+<!--            <img src="images/webimg1.jpg" alt="" class="slider-image">-->
+<!--            <div class="post-info">-->
+<!--              <h4><a href="single.html">One day your life will flash before your eyes</a></h4>-->
+<!--              <i class="fa-solid fa-user">Orumba-Media</i>-->
+<!--              <i class="fa-solid fa-calendar">Nov 26, 2044</i>-->
+<!--            </div>-->
+<!--            -->
+<!--          </div>-->
+<!--              <div class="post">-->
+<!--            <img src="images/webimg1.jpg" alt="" class="slider-image">-->
+<!--            <div class="post-info">-->
+<!--              <h4><a href="single.html">One day your life will flash before your eyes</a></h4>-->
+<!--              <i class="fa-solid fa-user">Orumba-Media</i>-->
+<!--              <i class="fa-solid fa-calendar">Nov 26, 2044</i>-->
+<!--            </div>-->
+<!--            -->
+<!--          </div>-->
+<!--              <div class="post">-->
+<!--            <img src="images/webimg1.jpg" alt="" class="slider-image">-->
+<!--            <div class="post-info">-->
+<!--              <h4><a href="single.html">One day your life will flash before your eyes</a></h4>-->
+<!--              <i class="fa-solid fa-user">Orumba-Media</i>-->
+<!--              <i class="fa-solid fa-calendar">Nov 26, 2044</i>-->
+<!--            </div>-->
+<!--            -->
+<!--          &lt;!&ndash; </div>-->
+<!--              <div class="post">-->
+<!--            <img src=".//images/web img1.jpg" alt="" class="slider-image">-->
+<!--            <div class="post-info">-->
+<!--              <h4><a href="single.html">One day your life will flash before your eyes</a></h4>-->
+<!--              <i class="fa-solid fa-user">Orumba-Media</i>-->
+<!--              <i class="fa-solid fa-calendar">Nov 26, 2044</i>-->
+<!--            </div> &ndash;&gt;-->
+<!--            -->
+<!--          </div>-->
+<!--          &lt;!&ndash; <div class="post">2</div>-->
+<!--          <div class="post">3</div>-->
+<!--          <div class="post">4</div>-->
+<!--          <div class="post">5</div> &ndash;&gt;-->
+<!--          &lt;!&ndash; <div class="post">6</div> &ndash;&gt;-->
+<!--        </div>-->
+<!--      </div>-->
+          {% if not result %}
+          <p class="para"> There are no trending post at the moment</p>
+          {% endif %}
+
+     </div>
+
+
+      <!-- PAGE WRAPPER -->
+    </div>
+
+<!-- CONTENT -->
+     <h1 class="recent-post-tittle" style="text-align: center;">ALL POSTS</h1>
+ <div class="flexthis">
+  <div class="post">
+      {% if not posts %}
+      <div>
+      <p class="para"> No post available at the moment </p>
+          <div class="flexthistoo">
+      <button class="thisbtn"> <a href="{{ url_for('create_post') }}">Create Post</a></button>
+          </div>
+      </div>
+      {% else %}
+      {% for post in posts %}
+      <div class="bodywrapper">
+      <p class="bodytitle">      {{ post.title }}</p>
+        <p class="bodysub">{{post.subtitle }}</p>
+          <p> Author: {{ user.username }}</p>
+
+      <div class="flexth">
+      <button class="thisbtn"> <a href="{{ url_for('create_post') }}">Read More</a></button>
+                <button class="thisbtn"> <a href="{{ url_for('delete', post_id=post.id )}}">Delete Post</a></button>
+
+          </div>
+      </div>
+      <div class="flexthistoo">
+      <button class="thisbtn"> <a href="{{ url_for('create_post') }}">Create New Post</a></button>
+          </div>
+      {% endfor %}
+      {% endif %}
+
+  </div>
+     <div class="side-bar">
+  <div class="section search">
+    <h2 class="section-tittle"></h2>
+    <form action="index.html" method="post">
+      <input type="text" name="search-term" class="text-input" placeholder="search">
+    </form>
+  </div>
+
+  <div class="section topics">
+    <h2 class="section-tittle">Topics</h2>
+    <ul>
+      <li><a href="#">Poems</a></li>
+      <li><a href="#">Quotes</a></li>
+      <li><a href="#">Fiction</a></li>
+      <li><a href="#">Biography</a></li>
+      <li><a href="#">Motivation</a></li>
+      <li><a href="#">Inspiration</a></li>
+      <li><a href="#">Life Lessons</a></li>
+    </ul>
+  </div>
+</div>
+ </div>
+ </div>
+  <!-- FOOTER -->
+   <div class="footer">
+    <div class="footer-content">
+      <div class="footer-section about">
+        <h1 class="logo-text"><span>Mars</span>Media</h1>
+        <p>
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vitae voluptatibus minima harum tenetur a maxime.
+        </p>
+        <div class="contact">
+          <span><i class="fa-solid fa-phone">&nbsp; 123-456-789</i></span> 
+          <span><i class="fa-solid fa-envelope">&nbsp; info@taurustech</i></span>
+        </div>
+        <div class="socials">
+          <a href="#"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-section links">
+        <h2>Quick Links</h2>
+        <br>
+        <ul>
+          <a href="#"><li>Events</li></a>
+          <a href="#"><li>Team</li></a>
+          <a href="#"><li>Gallery</li></a>
+          <a href="#"><li>Terms & conditions</li></a>
+        </ul>
+      </div>
+
+      <div class="footer-section contact-form">
+        <h2>Contact Us</h2>
+        <br>
+        <form action="index.html" method="post">
+          <input type="email" class="text-input contact-input" placeholder="your email">
+          <textarea rows="4" name="message"  class="text-input contact-input" placeholder="your message"></textarea>
+          <button type="submit" class="btn btn-big contact-btn">
+            <i class="fa-solid fa-envelope"></i>
+            Send
+          </button>
+        </form>
+      </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+      &copy; taurustech.com | designed by Taurus Tech
+    </div>
+   </div>
+  <!-- FOOTER -->
+
+    <!-- JQUERY -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- SLICK CAROUSEL -->
+     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+
+    <!-- CUSTOM SCRIPT -->
+    <script src="js/script.js"></script>
+  </body>
+</html>
