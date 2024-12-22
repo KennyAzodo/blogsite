@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request, flash, redirect, url_for
+from functools import wraps
+
+from flask import Flask, render_template, request, flash, redirect, url_for, abort
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import select, func
 from sqlalchemy.orm import mapped_column, Mapped
@@ -15,6 +17,7 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Required for session management
 # Initialize Flask-Login
 login_manager = LoginManager(app)
+login_manager.init_app(app)
 bootstrap = Bootstrap5(app)
 login_manager.login_view = 'login'  # Redirect to 'login' view if not logged in
 
@@ -73,13 +76,24 @@ class BlogPostForm(FlaskForm):
     body = CKEditorField('Body', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
+def admin_only(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        # If id is not 1 then return abort with 403 error
+        if current_user.id != 1:
+            return abort(403)
+        # Otherwise continue with the route function
+        return f(*args, **kwargs)
+
+    return decorated_function
+
 
 @login_manager.user_loader
 def load_user(user_id):
     return db.session.get(User, int(user_id))  # Load user by ID
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form.get('username')
@@ -117,17 +131,18 @@ def signup():
     return render_template('register.html')
 
 
-@app.route('/home')
+@app.route('/')
 def home():
     stmt = select(Post).where(Post.is_trending == True)
     result = db.session.execute(stmt).scalars().all()
     stmt2 = select(Post)  # Select all posts
     result2 = db.session.execute(stmt2)  # Execute the query
     posts = result2.scalars().all()
-    return render_template('index.html', result=result, posts=posts, user=current_user)
+    return render_template('index.html', result=result, posts=posts, user=current_user, current_user=current_user)
 
 
 @app.route('/create_post', methods=['GET', 'POST'])
+@admin_only
 def create_post():
     form = BlogPostForm()
     if form.validate_on_submit():
@@ -146,7 +161,9 @@ def create_post():
 
     return render_template('create.html', form=form)
 
+
 @app.route('/delete_post/<post_id>')
+@admin_only
 def delete(post_id):
     stmt = select(Post).where(Post.id == post_id)
     result = db.session.execute(stmt).scalar()
@@ -155,6 +172,17 @@ def delete(post_id):
     return redirect(url_for('home'))
 
 
+@app.route('/read_more/<post_id>', methods=['GET', 'POST'])
+def readmore(post_id):
+    stmt = select(Post).where(Post.id == post_id)
+    result = db.session.execute(stmt).scalar()
+    return render_template('readmore.html', post=result)
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('home'))
 
 
 if __name__ == '__main__':

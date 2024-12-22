@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--font Awesome-->
+       <script
+      src="https://kit.fontawesome.com/576f0d94a2.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- <link
+      rel="stylesheet"
+      href="https://path/to/font-awesome/css/font-awesome.min.css"
+    /> -->
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+
+    <!--CUSTOM STYLING-->
+
+    <title>Blog</title>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <h1 class="logo-text"><span>Orumba-</span>media</h1>
+      </div>
+      <i class="fa-solid fa-bars menu-toggle"></i>
+      <ul class="nav">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">History</a></li>
+        <li>
+          <a href="#">Services</a>
+          <ul style="left: 0px">
+            <li><a href="#">Wed-dev</a></li>
+            <li><a href="#">Magazine</a></li>
+            <li><a href="#">CCTV installation</a></li>
+            <!-- <li><a href="#"></a></li> -->
+
+          </ul>
+        </li>
+        <!-- <li><a href="#">Sign-Up</a></li>
+        <li><a href="#">Log-In</a></li> -->
+        <!-- if you want to create a drop down menu study from line 45 -53 and css styling.................. but for this code copy thesame line after studying and paste on the place you wanta dropdown in the header -->
+        <li>
+
+          <a href="#">
+            <i class="fa-solid fa-user"></i>
+            Taurus tech
+            <i class="fa-solid fa-caret-down" style="font-size: .8em"></i>
+          </a>
+          </i>
+          <ul>
+            <li><a href="./admin/posts/index.html">Dash-board</a></li>
+            <li><a class="logout" href="#">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </header>
+<div class="holder">
+  {% if post %}
+  <h1 class="h1"> {{ post.title }}</h1>
+   <h2 class="h2"> {{ post.subtitle }}</h2>
+  <h4 class="h4"> Author: {{ post.user.username}}</h4>
+</div>
+  <div class="container">
+
+    {{ post.content }}
+  </div>
+  {% endif %}
+
+
+  </body>
