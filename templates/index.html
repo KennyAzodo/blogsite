@@ -14,38 +14,39 @@
 </head>
 <body>
     <!-- HEADER -->
-    <header>
-        <div class="logo">
-            <h1 class="logo-text"><span>Orumba-</span>Media</h1>
-        </div>
-        <i class="fa-solid fa-bars menu-toggle"></i>
-        <ul class="nav">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">History</a></li>
-            <li>
-                <a href="#">Services</a>
-                <ul style="left: 0px;">
-                    <li><a href="#">Web-dev</a></li>
-                    <li><a href="#">Magazine</a></li>
-                    <li><a href="#">CCTV Installation</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="fa-solid fa-user"></i> Taurus Tech
-                    <i class="fa-solid fa-caret-down" style="font-size: .8em"></i>
-                </a>
-                <ul>
-                    <li><a href="./admin/posts/index.html">Dashboard</a></li>
-                    {% if current_user.is_authenticated %}
-                        <li><a class="logout" href="{{ url_for('logout') }}">Logout</a></li>
-                    {% else %}
-                        <li><a class="logout" href="{{ url_for('login') }}">Login</a></li>
-                    {% endif %}
-                </ul>
-            </li>
-        </ul>
-    </header>
+   <header>
+    <div class="logo">
+        <h1 class="logo-text"><span>Orumba-</span>Media</h1>
+    </div>
+    <i class="fa-solid fa-bars menu-toggle"></i>
+    <ul class="nav">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">History</a></li>
+        <li>
+            <a href="#">Services</a>
+            <ul style="left: 0px;">
+                <li><a href="#">Web-dev</a></li>
+                <li><a href="#">Magazine</a></li>
+                <li><a href="#">CCTV Installation</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">
+                <i class="fa-solid fa-user"></i> Taurus Tech
+                <i class="fa-solid fa-caret-down" style="font-size: .8em"></i>
+            </a>
+            <ul>
+                <li><a href="./admin/posts/index.html">Dashboard</a></li>
+                {% if current_user.is_authenticated %}
+                    <li><a class="logout" href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a class="logout" href="{{ url_for('login') }}">Login</a></li>
+                {% endif %}
+            </ul>
+        </li>
+    </ul>
+</header>
+
 
     <!-- PAGE WRAPPER -->
     <div class="page-wrapper">
@@ -56,6 +57,8 @@
                 <p class="para">There are no trending posts at the moment</p>
             {% endif %}
         </div>
+
+
 
         <!-- ALL POSTS -->
         <h1 class="recent-post-title" style="text-align: center;">ALL POSTS</h1>
@@ -168,6 +171,7 @@
     <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 
     <!-- CUSTOM SCRIPT -->
-    <script src="js/script.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
 </body>
 </html>

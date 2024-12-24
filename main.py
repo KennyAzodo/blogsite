@@ -1,8 +1,10 @@
 from functools import wraps
 
-from flask import Flask, render_template, request, flash, redirect, url_for, abort
+from flask import Flask, render_template, request, flash, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import select, func
+from werkzeug.exceptions import abort
+from werkzeug.security import generate_password_hash,check_password_hash
 from sqlalchemy.orm import mapped_column, Mapped
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from flask_ckeditor import CKEditor
@@ -103,9 +105,12 @@ def login():
         if not result:
             flash('User is not registered, sign up!')
             return redirect(url_for('signup'))
-        if password == result.password:
+        if check_password_hash(result.password,password):
             login_user(result)
             return redirect(url_for('home'))
+        elif not check_password_hash(result.password,password):
+            flash('Password is incorrect')
+            return redirect(url_for('login'))
     return render_template('login.html')
 
 
@@ -123,7 +128,7 @@ def signup():
         if result:
             flash('This username is not available')
             return redirect('signup')
-        new_user = User(username=username, email=email, password=password)
+        new_user = User(username=username, email=email, password=generate_password_hash(password, method='pbkdf2:sha256', salt_length=8))
         db.session.add(new_user)
         db.session.commit()
         login_user(new_user)
@@ -155,8 +160,6 @@ def create_post():
         new_post = Post(title=title, subtitle=subtitle, content=body, user_id=current_user.id)
         db.session.add(new_post)
         db.session.commit()
-
-        flash('Post created successfully!', 'success')
         return redirect(url_for('home'))
 
     return render_template('create.html', form=form)
