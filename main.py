@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, flash, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import select, func
 from werkzeug.exceptions import abort
-from werkzeug.security import generate_password_hash,check_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.orm import mapped_column, Mapped
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from flask_ckeditor import CKEditor
@@ -78,6 +78,7 @@ class BlogPostForm(FlaskForm):
     body = CKEditorField('Body', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
+
 def admin_only(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -105,10 +106,10 @@ def login():
         if not result:
             flash('User is not registered, sign up!')
             return redirect(url_for('signup'))
-        if check_password_hash(result.password,password):
+        if check_password_hash(result.password, password):
             login_user(result)
             return redirect(url_for('home'))
-        elif not check_password_hash(result.password,password):
+        elif not check_password_hash(result.password, password):
             flash('Password is incorrect')
             return redirect(url_for('login'))
     return render_template('login.html')
@@ -128,7 +129,8 @@ def signup():
         if result:
             flash('This username is not available')
             return redirect('signup')
-        new_user = User(username=username, email=email, password=generate_password_hash(password, method='pbkdf2:sha256', salt_length=8))
+        new_user = User(username=username, email=email,
+                        password=generate_password_hash(password, method='pbkdf2:sha256', salt_length=8))
         db.session.add(new_user)
         db.session.commit()
         login_user(new_user)
@@ -186,6 +188,16 @@ def readmore(post_id):
 def logout():
     logout_user()
     return redirect(url_for('home'))
+
+
+@app.route('/history')
+def history():
+    return render_template('history.html')
+
+
+@app.route('/magazine')
+def magazine():
+    return render_template('magazine.html')
 
 
 if __name__ == '__main__':

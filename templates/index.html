@@ -21,12 +21,12 @@
     <i class="fa-solid fa-bars menu-toggle"></i>
     <ul class="nav">
         <li><a href="#">Home</a></li>
-        <li><a href="#">History</a></li>
+        <li><a href="{{ url_for('history') }}">History</a></li>
         <li>
             <a href="#">Services</a>
             <ul style="left: 0px;">
                 <li><a href="#">Web-dev</a></li>
-                <li><a href="#">Magazine</a></li>
+                <li><a href="{{ url_for('magazine')  }}">Magazine</a></li>
                 <li><a href="#">CCTV Installation</a></li>
             </ul>
         </li>

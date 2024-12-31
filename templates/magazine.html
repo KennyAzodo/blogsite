@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Orumba-Media</title>
+    <!-- Custom Styling -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/magazine.css') }}" />
+  </head>
+  <body>
+    <input type="radio" name="photos" id="check1" checked />
+    <input type="radio" name="photos" id="check2" />
+    <input type="radio" name="photos" id="check3" />
+    <input type="radio" name="photos" id="check4" />
+
+    <div class="container">
+      <h1>Our Photo Gallery</h1>
+      <div class="top-content">
+        <h3>PHOTO GALLERY</h3>
+        <label for="check1">All Photos</label>
+        <label for="check2">Family Photos</label>
+        <label for="check3">Child Photos</label>
+        <label for="check4">Visited Places</label>
+      </div>
+      <div class="photo-gallery">
+        <div class="pic place">
+          <img src="images/openingprayers.jpg" />
+        </div>
+        <div class="pic family">
+          <img src="images/footballcompetition.jpg" />
+        </div>
+        <div class="pic child">
+          <img src="images/football2.jpg" />
+        </div>
+        <div class="pic place">
+          <img src="images/attendees.jpg" />
+        </div>
+        <div class="pic family">
+          <img src="images/highlights2.jpg" />
+        </div>
+        <div class="pic child">
+          <img src="images/highlights3.jpg" />
+        </div>
+        <div class="pic place">
+          <img src="images/highlights.jpg" />
+        </div>
+        <div class="pic family">
+          <img src="images/highlights2.jpg" />
+        </div>
+        <div class="pic child">
+          <img src="images/beforekickoff.jpg" />
+        </div>
+        <div class="pic place">
+          <img src="images/highlights.jpg" />
+        </div>
+        <div class="pic family">
+          <img src="images/highlights2.jpg" />
+        </div>
+        <div class="pic child">
+          <img src="images/beforekickoff.jpg" />
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

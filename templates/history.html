@@ -14,7 +14,7 @@
       href="https://path/to/font-awesome/css/font-awesome.min.css"
     /> -->
 
-    <link rel="stylesheet" href=".//css/style.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 
     <!--CUSTOM STYLING-->
 
@@ -35,17 +35,17 @@
       </div>
       <i class="fa-solid fa-bars menu-toggle"> </i>
       <ul class="nav">
-        <li><a href="#">Home</a></li>
+        <li><a href="{{ url_for('home')  }}">Home</a></li>
         <li><a href="#">History</a></li>
-        <li>
+        <li><a href="#">Gallery</a></li>
+        <!-- <li>
           <a href="#">Services</a>
           <ul style="left: 0px">
             <li><a href="#">Wed-dev</a></li>
             <li><a href="#">Magazine</a></li>
             <li><a href="#">CCTV installation</a></li>
-            <!-- <li><a href="#"></a></li> -->
           </ul>
-        </li>
+        </li> -->
         <!-- <li><a href="#">Sign-Up</a></li>
         <li><a href="#">Log-In</a></li> -->
         <!-- if you want to create a drop down menu study from line 45 -53 and css styling.................. but for this code copy thesame line after studying and paste on the place you wanta dropdown in the header -->
@@ -59,7 +59,7 @@
           
           <ul>
             <li><a href="#">Dash-board</a></li>
-            <li><a class="logout" href="#">Logout</a></li>
+            <li><a class="logout" href="{{ url_for('logout') }}">Logout</a></li>
           </ul>
         </li>
       </ul>
@@ -255,7 +255,6 @@
     ></script>
 
     <!-- CUSTOM SCRIPT -->
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-
+    <script src="js/script.js"></script>
   </body>
 </html>
