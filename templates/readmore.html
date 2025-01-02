@@ -12,9 +12,14 @@
     <!-- <link
       rel="stylesheet"
       href="https://path/to/font-awesome/css/font-awesome.min.css"
-    /> -->
 
+    /> -->
+    {{ bootstrap.load_css() }}
+    {{ ckeditor.load() }}
+    {{ ckeditor.config(name='body') }}
+{% from "bootstrap5/form.html" import render_form %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+
 
     <!--CUSTOM STYLING-->
 
@@ -36,7 +41,9 @@
                 <i class="fa-solid fa-caret-down" style="font-size: .8em"></i>
             </a>
             <ul>
+                {% if current_user.id == 1 %}
                 <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                {% endif %}
                 {% if current_user.is_authenticated %}
                     <li><a class="logout" href="{{ url_for('logout') }}">Logout</a></li>
                 {% else %}
@@ -56,6 +63,29 @@
 
     {{ post.content }}
   </div>
+
+    <div class="container">{{  render_form(comment) }}</div>
+
+
+        <div class="comment_box" >
+            Comments:
+        </div>
+
+        {% for comment in post.comments %}
+    <div class="comment">
+        <div class="comment-header">
+            <div class="commenterImage">
+                <img src="{{ comment.comment_author.email | gravatar }}" />
+            </div>
+            <span class="sub-text">{{ comment.comment_author.username }}</span>
+        </div>
+        <div class="commentText">
+            {{ comment.text | safe }}
+        </div>
+    </div>
+{% endfor %}
+
+
   {% endif %}
 
 

@@ -31,29 +31,33 @@
       src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v21.0"
     ></script>
 
-    <header>
-      <div class="logo">
-        <h1 class="logo-text"><span>Orumba-</span>media</h1>
-      </div>
-      <i class="fa-solid fa-bars menu-toggle"> </i>
-      <ul class="nav">
-      <li><a href="index.html">Home</a></li>
-        <li><a href="./history.html">History</a></li>
-        <li><a href="./magazine.html">Gallery</a></li>
-        <!-- <li><a href="#">Sign-Up</a></li>
-        <li><a href="#">Log-In</a></li> -->
-        <!-- if you want to create a drop down menu study from line 45 -53 and css styling.................. but for this code copy thesame line after studying and paste on the place you wanta dropdown in the header -->
+    <<header>
+    <div class="logo">
+        <h1 class="logo-text"><span>Orumba-</span>Media</h1>
+    </div>
+    <i class="fa-solid fa-bars menu-toggle"></i>
+    <ul class="nav">
+        <li><a href="#">Home</a></li>
+        <li><a href="{{ url_for('history') }}">History</a></li>
+         <li><a href="{{ url_for('magazine')  }}">Magazine</a></li>
         <li>
-          <i class="fa-solid fa-user"></i>
-          <a href="#">Taurus tech</a>
-          <i class="fa-solid fa-caret-down" style="font-size: 8px"></i>
-          <ul>
-            <li><a href="#">Dash-board</a></li>
-            <li><a class="logout" href="#">Logout</a></li>
-          </ul>
+            <a href="#">
+                <i class="fa-solid fa-user"></i> Taurus Tech
+                <i class="fa-solid fa-caret-down" style="font-size: .8em"></i>
+            </a>
+            <ul>
+                {% if current_user.id == 1 %}
+                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                {% endif %}
+                {% if current_user.is_authenticated %}
+                    <li><a class="logout" href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a class="logout" href="{{ url_for('login') }}">Login</a></li>
+                {% endif %}
+            </ul>
         </li>
-      </ul>
-    </header>
+    </ul>
+</header>
 
     <!-- CONTENT -->
      {% with messages = get_flashed_messages(with_categories=True) %}

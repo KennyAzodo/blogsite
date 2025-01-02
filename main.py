@@ -2,10 +2,10 @@ from functools import wraps
 
 from flask import Flask, render_template, request, flash, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import select, func
+from sqlalchemy import select, func, Integer, Text
 from werkzeug.exceptions import abort
 from werkzeug.security import generate_password_hash, check_password_hash
-from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy.orm import mapped_column, Mapped, relationship
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from flask_ckeditor import CKEditor
 from flask_wtf import FlaskForm
@@ -13,6 +13,7 @@ from wtforms import StringField, SubmitField
 from flask_ckeditor import CKEditorField
 from wtforms.validators import DataRequired
 from flask_bootstrap import Bootstrap5
+from flask_gravatar import Gravatar
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -30,7 +31,14 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Initialize SQLAlchemy
 db = SQLAlchemy(app)
 ckeditor = CKEditor(app)
-
+gravatar = Gravatar(app,
+                    size=40,
+                    rating='g',
+                    default='retro',
+                    force_default=False,
+                    force_lower=False,
+                    use_ssl=False,
+                    base_url=None)
 
 # Define a model
 class User(db.Model, UserMixin):
@@ -40,9 +48,11 @@ class User(db.Model, UserMixin):
     username: Mapped[str] = mapped_column(db.String(80), unique=True, nullable=False)  # Unique username
     email: Mapped[str] = mapped_column(db.String(120), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(db.String(120), nullable=False)  # User password
-
+    is_admin: Mapped[bool] = mapped_column(db.Boolean, default=False,
+                                           nullable=False)
     # Relationship to Post model
     posts: Mapped[list['Post']] = db.relationship('Post', back_populates='user', cascade='all, delete-orphan')
+    comments = relationship("Comment", back_populates="comment_author")
 
     def __repr__(self):
         return f'<User {self.username}>'
@@ -57,14 +67,29 @@ class Post(db.Model):
     content: Mapped[str] = mapped_column(db.Text, nullable=False)  # Post content
     user_id: Mapped[int] = mapped_column(db.Integer, db.ForeignKey('users.id'),
                                          nullable=False)  # Foreign key to User table
-    is_trending: Mapped[bool] = mapped_column(db.Boolean, default=False,
-                                              nullable=False)  # Indicates if the post is trending
 
+    is_trending: Mapped[bool] = mapped_column(db.Boolean, default=False,
+                                              nullable=False)
     # Relationship to User model
     user: Mapped['User'] = db.relationship('User', back_populates='posts')
+    comments = relationship("Comment", back_populates="parent_post")
 
     def __repr__(self):
         return f'<Post {self.title}, Trending: {self.is_trending}>'
+
+
+class Comment(db.Model):
+    __tablename__ = "comments"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    text: Mapped[str] = mapped_column(Text, nullable=False)
+
+    # Relationship with the User model
+    author_id: Mapped[int] = mapped_column(Integer, db.ForeignKey("users.id"))
+    comment_author = relationship("User", back_populates="comments")
+
+    # Relationship with the Post model
+    post_id: Mapped[int] = mapped_column(Integer, db.ForeignKey("posts.id"))
+    parent_post = relationship("Post", back_populates="comments")
 
 
 # Create the database tables
@@ -79,13 +104,32 @@ class BlogPostForm(FlaskForm):
     submit = SubmitField('Submit')
 
 
+class CommentForm(FlaskForm):
+    comment_text = CKEditorField('Comment', validators=[DataRequired()])
+    submit = SubmitField("Submit Comment")
+
+
 def admin_only(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        # If id is not 1 then return abort with 403 error
-        if not current_user.is_authenticated:
+        # Check if the user is authenticated and an admin
+        if not current_user.is_authenticated or not getattr(current_user, 'is_admin', False):
+            # Abort with 403 error if not an admin
             return abort(403)
-        # Otherwise continue with the route function
+        # Otherwise, continue with the route function
+        return f(*args, **kwargs)
+
+    return decorated_function
+
+
+def mainadmin_only(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        # Check if the user is authenticated and an admin
+        if not current_user.id == 1:
+            # Abort with 403 error if not an admin
+            return abort(403)
+        # Otherwise, continue with the route function
         return f(*args, **kwargs)
 
     return decorated_function
@@ -94,6 +138,8 @@ def admin_only(f):
 @login_manager.user_loader
 def load_user(user_id):
     return db.session.get(User, int(user_id))  # Load user by ID
+
+
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -121,25 +167,43 @@ def signup():
         username = request.form.get('username')
         email = request.form.get('email')
         password = request.form.get('password')
+
         if password != request.form.get('passwordconf'):
-            flash('Passwords does not match')
+            flash('Passwords do not match')
             return redirect(url_for('signup'))
+
+        # Check if the username is already taken
         stmt = select(User).where(User.username == username)
         result = db.session.execute(stmt).scalar()
         if result:
             flash('This username is not available')
-            return redirect('signup')
+            return redirect(url_for('signup'))
+
+        # Check if the email is already in use
         stmt2 = select(User).where(User.email == email)
         result2 = db.session.execute(stmt2).scalar()
         if result2:
-            flash('This Email is already in use')
-            return redirect('signup')
-        new_user = User(username=username, email=email,
-                        password=generate_password_hash(password, method='pbkdf2:sha256', salt_length=8))
+            flash('This email is already in use')
+            return redirect(url_for('signup'))
+
+        # Check if this is the first user using `select`
+        stmt_count = select(func.count(User.id))
+        user_count = db.session.execute(stmt_count).scalar()
+        is_admin = user_count == 0
+
+        # Create a new user
+        new_user = User(
+            username=username,
+            email=email,
+            password=generate_password_hash(password, method='pbkdf2:sha256', salt_length=8),
+            is_admin=is_admin
+        )
         db.session.add(new_user)
         db.session.commit()
+
         login_user(new_user)
         return redirect(url_for('home'))
+
     return render_template('register.html')
 
 
@@ -177,6 +241,12 @@ def create_post():
 def delete(post_id):
     stmt = select(Post).where(Post.id == post_id)
     result = db.session.execute(stmt).scalar()
+
+    stmt2 = select(Comment).where(Comment.post_id == post_id)
+    result2 = db.session.execute(stmt2).scalars().all()  # Get all comments related to the post
+    if result2:
+        for comment in result2:
+            db.session.delete(comment)  # Delete each comment individually
     db.session.delete(result)
     db.session.commit()
     return redirect(url_for('home'))
@@ -186,7 +256,23 @@ def delete(post_id):
 def readmore(post_id):
     stmt = select(Post).where(Post.id == post_id)
     result = db.session.execute(stmt).scalar()
-    return render_template('readmore.html', post=result)
+    comment = CommentForm()
+
+    if comment.validate_on_submit():
+        if not current_user.is_authenticated:
+            flash("You need to login or register to comment.")
+            return redirect(url_for("login"))
+
+        # Ensure that the post_id is properly set when creating the comment
+        new_comment = Comment(
+            text=comment.comment_text.data,
+            comment_author=current_user,
+            parent_post=result,  # This automatically sets post_id
+        )
+        db.session.add(new_comment)
+        db.session.commit()
+
+    return render_template('readmore.html', post=result, comment=comment)
 
 
 @app.route('/logout')
@@ -204,44 +290,29 @@ def history():
 def magazine():
     return render_template('magazine.html')
 
-@app.route("/dashboard" ,methods=['GET','POST'])
+
+@app.route("/dashboard", methods=['GET', 'POST'])
+@mainadmin_only
 def dashboard():
     if request.method == 'POST':
-        username = request.form.get('username')
         email = request.form.get('email')
-        password = request.form.get('password')
-        conf_pass = request.form.get('passwordconf')
 
-        stmt = select(Post).where(User.username == username)
-        result = db.session.execute(stmt).scalar()
-        if result:
-            flash('USERNAME IS NOT AVAILABLE')
+        # Query the user by email
+        stmt = select(User).where(User.email == email)
+        user = db.session.execute(stmt).scalar()
+
+        # Check if the user exists
+        if not user:
+            flash('Email is not registered')
             return redirect(url_for('dashboard'))
-        if len(username) < 1:
-            flash('Username cannot be empty')
-            return redirect(url_for('dashboard'))
-        if len(email) < 1:
-            flash('Email cannot be empty')
-            return redirect(url_for('dashboard'))
-        if len(password) < 1:
-            flash('Password cannot be empty')
-            return redirect(url_for('dashboard'))
-        stmt2 = select(Post).where(User.email == email)
-        result2 = db.session.execute(stmt2).scalar()
-        if result2:
-            flash('EMAIL HAS ALREADY BEEN REGISTERED')
-            return redirect(url_for('dashboard'))
-        if password != conf_pass:
-            flash('Passwords does not match')
-            return redirect(url_for('dashboard'))
-        new_user = User(username=username, email=email,password=generate_password_hash(password, method='pbkdf2:sha256', salt_length=8))
-        db.session.add(new_user)
+
+        # Make the user an admin
+        user.is_admin = True
         db.session.commit()
-        login_user(new_user)
-        return redirect(url_for('home'))
+        flash(f"{user.username} has been successfully made an admin!")
+        return redirect(url_for('dashboard'))
 
     return render_template('createdashboard.html')
-
 
 
 if __name__ == '__main__':

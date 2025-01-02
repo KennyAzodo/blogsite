@@ -25,25 +25,32 @@
   </head>
   <body>
     <header>
-      <div class="logo">
-        <h1 class="logo-text"><span>Orumba-</span>media</h1>
-      </div>
-      <i class="fa-solid fa-bars menu-toggle"></i>
-      <ul class="nav">
+    <div class="logo">
+        <h1 class="logo-text"><span>Orumba-</span>Media</h1>
+    </div>
+    <i class="fa-solid fa-bars menu-toggle"></i>
+    <ul class="nav">
+        <li><a href="#">Home</a></li>
+        <li><a href="{{ url_for('history') }}">History</a></li>
+         <li><a href="{{ url_for('magazine')  }}">Magazine</a></li>
         <li>
-          <a href="#">
-            <i class="fa-solid fa-user"></i>
-            Taurus tech
-            <i class="fa-solid fa-caret-down" style="font-size: .8em"></i>
-          </a>
-
-          <ul>
-            <!-- <li><a href="#">Dash-board</a></li> -->
-            <li><a class="logout" href="#">Logout</a></li>
-          </ul>
+            <a href="#">
+                <i class="fa-solid fa-user"></i> Taurus Tech
+                <i class="fa-solid fa-caret-down" style="font-size: .8em"></i>
+            </a>
+            <ul>
+                {% if current_user.id == 1 %}
+                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                {% endif %}
+                {% if current_user.is_authenticated %}
+                    <li><a class="logout" href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a class="logout" href="{{ url_for('login') }}">Login</a></li>
+                {% endif %}
+            </ul>
         </li>
-      </ul>
-    </header>
+    </ul>
+</header>
 
     <!-- PAGE WRAPPER -->
      <div class="admin-wrapper">

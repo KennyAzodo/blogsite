@@ -748,3 +748,50 @@ flex-direction: row;
     text-align: center;
     padding: 50px;
 }
+.signup{
+    color:blue;
+}
+.comment {
+    margin-bottom: 20px;  /* Adds space between comments */
+    padding: 10px;
+
+    border-bottom: 1px solid #ccc;  /* Optional: Adds a line separating comments */
+    display: block;  /* Ensures each comment starts on a new line */
+}
+
+.comment-header {
+    display: block;  /* Makes the header block-level, so it occupies full width */
+    margin-bottom: 8px;
+}
+
+.commenterImage img {
+    border-radius: 50%;
+    width: 40px;  /* Adjust the size of the image */
+    height: 40px;
+    display: block;  /* Ensures the image itself is block-level */
+    margin-bottom: 8px;  /* Adds space below the image */
+}
+.commenterImage{
+    display: flex;
+}
+
+.sub-text {
+    font-weight: bold;
+    display: block;  /* Makes the username appear on a new line */
+}
+
+.commentText {
+    padding-top: 10px;
+    font-size: 14px;  /* Optional: Adjust the text size */
+    color: #333;  /* Optional: Adjust the text color */
+    line-height: 1.6;  /* Optional: Adjust the line height for better readability */
+}
+.comment_box{
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.wrapper{
+    display: flex;
+    flex-direction: column;
+}
