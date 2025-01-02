@@ -115,27 +115,32 @@ def login():
     return render_template('login.html')
 
 
-# @app.route('/signup', methods=['GET', 'POST'])
-# def signup():
-#     if request.method == 'POST':
-#         username = request.form.get('username')
-#         email = request.form.get('email')
-#         password = request.form.get('password')
-#         if password != request.form.get('passwordconf'):
-#             flash('Passwords does not match')
-#             return redirect(url_for('signup'))
-#         stmt = select(User).where(User.username == username)
-#         result = db.session.execute(stmt).scalar()
-#         if result:
-#             flash('This username is not available')
-#             return redirect('signup')
-#         new_user = User(username=username, email=email,
-#                         password=generate_password_hash(password, method='pbkdf2:sha256', salt_length=8))
-#         db.session.add(new_user)
-#         db.session.commit()
-#         login_user(new_user)
-#         return redirect(url_for('home'))
-#     return render_template('register.html')
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        if password != request.form.get('passwordconf'):
+            flash('Passwords does not match')
+            return redirect(url_for('signup'))
+        stmt = select(User).where(User.username == username)
+        result = db.session.execute(stmt).scalar()
+        if result:
+            flash('This username is not available')
+            return redirect('signup')
+        stmt2 = select(User).where(User.email == email)
+        result2 = db.session.execute(stmt2).scalar()
+        if result2:
+            flash('This Email is already in use')
+            return redirect('signup')
+        new_user = User(username=username, email=email,
+                        password=generate_password_hash(password, method='pbkdf2:sha256', salt_length=8))
+        db.session.add(new_user)
+        db.session.commit()
+        login_user(new_user)
+        return redirect(url_for('home'))
+    return render_template('register.html')
 
 
 @app.route('/')
@@ -164,7 +169,7 @@ def create_post():
         db.session.commit()
         return redirect(url_for('home'))
 
-    return render_template('createdashboard.html', form=form)
+    return render_template('create.html', form=form)
 
 
 @app.route('/delete_post/<post_id>')
