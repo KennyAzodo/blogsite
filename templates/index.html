@@ -14,7 +14,7 @@
 </head>
 <body>
     <!-- HEADER -->
-   <header>
+<header>
     <div class="logo">
         <h1 class="logo-text"><span>Orumba-</span>Media</h1>
     </div>
@@ -22,14 +22,7 @@
     <ul class="nav">
         <li><a href="#">Home</a></li>
         <li><a href="{{ url_for('history') }}">History</a></li>
-        <li>
-            <a href="#">Services</a>
-            <ul style="left: 0px;">
-                <li><a href="#">Web-dev</a></li>
-                <li><a href="{{ url_for('magazine')  }}">Magazine</a></li>
-                <li><a href="#">CCTV Installation</a></li>
-            </ul>
-        </li>
+         <li><a href="{{ url_for('magazine')  }}">Magazine</a></li>
         <li>
             <a href="#">
                 <i class="fa-solid fa-user"></i> Taurus Tech
