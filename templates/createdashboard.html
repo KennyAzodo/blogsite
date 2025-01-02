@@ -11,8 +11,8 @@
     ></script>
 		<link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.0.0/ckeditor5.css" crossorigin>
 
-    <link rel="stylesheet" href="../../css/style.css" />
-        <link rel="stylesheet" href="../../css/admin.css" />
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+       <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}" />
 
     <!--CUSTOM STYLING-->
 
@@ -45,9 +45,9 @@
       <!-- left sidebar -->
       <div class="left-sidebar">
         <ul>
-          <li><a href="../posts/index.html">Manage Post</a></li>
-          <li><a href="index.html">Manage Users</a></li>
-          <li><a href="../topics/index.html">Manage Topics</a></li>
+          <li><a href="#">Manage Post</a></li>
+          <li><a href="#">Manage Users</a></li>
+          <li><a href="#">Manage Topics</a></li>
         </ul>
       </div>
       <!-- left sidebar end -->
@@ -57,11 +57,19 @@
             <a href="create.html" class="btn btn-big">Add User</a>
             <a href="index.html" class="btn btn-big">Manage User's</a>
           </div>
-
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="category">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
 
           <div class="content">
             <h2 class="page-tittle">Add User</h2>
-           <form action="create.html" method="post">
+           <form action="{{ url_for('dashboard') }}" method="post">
            <div class="">
           <label for="">Username</label>
           <input type="text" name="username" class="text-input" />
@@ -78,16 +86,9 @@
           <label for="">Password Confirmation</label>
           <input type="password" name="passwordconf" class="text-input" />
         </div>
-        <div>
-                <label >Role</label>
-                <select name="topic" class="text-input">
-                  <option value="author">Author</option>
-                  <option value="admin">Admin</option>
-                </select>
-              </div>
+
               <div>
-                <label >Topic</label> 
-               <button: class="btn btn-big">Add User </button:>
+               <button class="btn btn-big">Add User </button>
               </div>
            </form>
           </div>

@@ -115,27 +115,27 @@ def login():
     return render_template('login.html')
 
 
-@app.route('/signup', methods=['GET', 'POST'])
-def signup():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        email = request.form.get('email')
-        password = request.form.get('password')
-        if password != request.form.get('passwordconf'):
-            flash('Passwords does not match')
-            return redirect(url_for('signup'))
-        stmt = select(User).where(User.username == username)
-        result = db.session.execute(stmt).scalar()
-        if result:
-            flash('This username is not available')
-            return redirect('signup')
-        new_user = User(username=username, email=email,
-                        password=generate_password_hash(password, method='pbkdf2:sha256', salt_length=8))
-        db.session.add(new_user)
-        db.session.commit()
-        login_user(new_user)
-        return redirect(url_for('home'))
-    return render_template('register.html')
+# @app.route('/signup', methods=['GET', 'POST'])
+# def signup():
+#     if request.method == 'POST':
+#         username = request.form.get('username')
+#         email = request.form.get('email')
+#         password = request.form.get('password')
+#         if password != request.form.get('passwordconf'):
+#             flash('Passwords does not match')
+#             return redirect(url_for('signup'))
+#         stmt = select(User).where(User.username == username)
+#         result = db.session.execute(stmt).scalar()
+#         if result:
+#             flash('This username is not available')
+#             return redirect('signup')
+#         new_user = User(username=username, email=email,
+#                         password=generate_password_hash(password, method='pbkdf2:sha256', salt_length=8))
+#         db.session.add(new_user)
+#         db.session.commit()
+#         login_user(new_user)
+#         return redirect(url_for('home'))
+#     return render_template('register.html')
 
 
 @app.route('/')
@@ -164,7 +164,7 @@ def create_post():
         db.session.commit()
         return redirect(url_for('home'))
 
-    return render_template('create.html', form=form)
+    return render_template('createdashboard.html', form=form)
 
 
 @app.route('/delete_post/<post_id>')
@@ -198,6 +198,45 @@ def history():
 @app.route('/magazine')
 def magazine():
     return render_template('magazine.html')
+
+@app.route("/dashboard" ,methods=['GET','POST'])
+def dashboard():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        conf_pass = request.form.get('passwordconf')
+
+        stmt = select(Post).where(User.username == username)
+        result = db.session.execute(stmt).scalar()
+        if result:
+            flash('USERNAME IS NOT AVAILABLE')
+            return redirect(url_for('dashboard'))
+        if len(username) < 1:
+            flash('Username cannot be empty')
+            return redirect(url_for('dashboard'))
+        if len(email) < 1:
+            flash('Email cannot be empty')
+            return redirect(url_for('dashboard'))
+        if len(password) < 1:
+            flash('Password cannot be empty')
+            return redirect(url_for('dashboard'))
+        stmt2 = select(Post).where(User.email == email)
+        result2 = db.session.execute(stmt2).scalar()
+        if result2:
+            flash('EMAIL HAS ALREADY BEEN REGISTERED')
+            return redirect(url_for('dashboard'))
+        if password != conf_pass:
+            flash('Passwords does not match')
+            return redirect(url_for('dashboard'))
+        new_user = User(username=username, email=email,password=generate_password_hash(password, method='pbkdf2:sha256', salt_length=8))
+        db.session.add(new_user)
+        db.session.commit()
+        login_user(new_user)
+        return redirect(url_for('home'))
+
+    return render_template('createdashboard.html')
+
 
 
 if __name__ == '__main__':

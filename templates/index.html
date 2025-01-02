@@ -36,7 +36,7 @@
                 <i class="fa-solid fa-caret-down" style="font-size: .8em"></i>
             </a>
             <ul>
-                <li><a href="./admin/posts/index.html">Dashboard</a></li>
+                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
                 {% if current_user.is_authenticated %}
                     <li><a class="logout" href="{{ url_for('logout') }}">Logout</a></li>
                 {% else %}
@@ -74,22 +74,22 @@
                             <p class="bodytitle">{{ post.title }}</p>
                             <p class="bodysub">{{ post.subtitle }}</p>
                             <p>Author: {{ post.user.username }}</p>
-                            {% if current_user.is_authenticated %}
+
                                 <div class="flexth">
                                     <button class="thisbtn">
                                         <a href="{{ url_for('readmore', post_id=post.id) }}">Read More</a>
                                     </button>
-                                    {% if current_user.id == 1 %}
+                                    {% if current_user.is_authenticated  %}
                                         <button class="thisbtn del_btn">
                                             <a href="{{ url_for('delete', post_id=post.id) }}">Delete Post</a>
                                         </button>
                                     {% endif %}
                                 </div>
-                            {% endif %}
+
                         </div>
                     {% endfor %}
                 {% endif %}
-                {% if current_user.id == 1 %}
+                {% if current_user.is_authenticated  %}
                     <div class="flexthistoo">
                         <button class="thisbtn">
                             <a href="{{ url_for('create_post') }}">Create New Post</a>
