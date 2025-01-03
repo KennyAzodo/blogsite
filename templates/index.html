@@ -69,6 +69,10 @@
                             <p class="bodytitle">{{ post.title }}</p>
                             <p class="bodysub">{{ post.subtitle }}</p>
                             <p>Author: {{ post.user.username }}</p>
+                            <p>Likes: {{ post.likes|length }}</p>
+                            <form action="{{ url_for('like_post', post_id=post.id) }}" method="post">
+            <a class="like_btn" href="{{ url_for('like_post', post_id=post.id) }}" >👍🏻</a>
+        </form>
 
                                 <div class="flexth">
                                     <button class="thisbtn">

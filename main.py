@@ -40,6 +40,7 @@ gravatar = Gravatar(app,
                     use_ssl=False,
                     base_url=None)
 
+
 # Define a model
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
@@ -53,6 +54,7 @@ class User(db.Model, UserMixin):
     # Relationship to Post model
     posts: Mapped[list['Post']] = db.relationship('Post', back_populates='user', cascade='all, delete-orphan')
     comments = relationship("Comment", back_populates="comment_author")
+    likes: Mapped[list['Like']] = db.relationship('Like', back_populates='user', cascade='all, delete-orphan')
 
     def __repr__(self):
         return f'<User {self.username}>'
@@ -73,6 +75,7 @@ class Post(db.Model):
     # Relationship to User model
     user: Mapped['User'] = db.relationship('User', back_populates='posts')
     comments = relationship("Comment", back_populates="parent_post")
+    likes: Mapped[list['Like']] = db.relationship('Like', back_populates='post', cascade='all, delete-orphan')
 
     def __repr__(self):
         return f'<Post {self.title}, Trending: {self.is_trending}>'
@@ -90,6 +93,20 @@ class Comment(db.Model):
     # Relationship with the Post model
     post_id: Mapped[int] = mapped_column(Integer, db.ForeignKey("posts.id"))
     parent_post = relationship("Post", back_populates="comments")
+
+
+class Like(db.Model):
+    __tablename__ = 'likes'
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    post_id: Mapped[int] = mapped_column(db.Integer, db.ForeignKey('posts.id'), nullable=False)
+
+    user = relationship('User', backref='liked_posts')
+    post = relationship('Post', backref='post_likes')
+
+    def __repr__(self):
+        return f'<Like User {self.user_id} Post {self.post_id}>'
 
 
 # Create the database tables
@@ -138,8 +155,6 @@ def mainadmin_only(f):
 @login_manager.user_loader
 def load_user(user_id):
     return db.session.get(User, int(user_id))  # Load user by ID
-
-
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -313,6 +328,64 @@ def dashboard():
         return redirect(url_for('dashboard'))
 
     return render_template('createdashboard.html')
+
+
+@app.route('/like/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def like_post(post_id):
+    stmt = select(Post).where(Post.id == post_id)
+    post = db.session.execute(stmt).scalar()
+
+    if not post:
+        flash('Post not found!')
+        return redirect(url_for('home'))
+
+    # Option 1: Increment the like count
+    # post.likes += 1
+
+    # Option 2: Add a new like record
+    existing_like_stmt = select(Like).where(Like.user_id == current_user.id, Like.post_id == post_id)
+    existing_like = db.session.execute(existing_like_stmt).scalar()
+    if existing_like:
+        db.session.delete(existing_like)
+
+    else:
+        new_like = Like(user_id=current_user.id, post_id=post_id)
+        db.session.add(new_like)
+
+    db.session.commit()
+    return redirect(url_for('home'))
+
+
+@app.route('/manageadmin')
+@mainadmin_only
+def manage_admin():
+    # Query to select all admin users
+    stmt_admins = select(User).where(User.is_admin == True)
+    admins = db.session.execute(stmt_admins).scalars().all()
+
+    # Query to select all non-admin users
+    stmt_non_admins = select(User).where(User.is_admin == False)
+    non_admins = db.session.execute(stmt_non_admins).scalars().all()
+
+    return render_template('manageadmin.html', admins=admins, non_admins=non_admins)
+
+
+@app.route('/delete_user/<int:user_id>', methods=['GET','POST'])
+@mainadmin_only
+def delete_user(user_id):
+    if request.method == 'POST':
+        stmt = select(User).where(User.id == user_id)
+        user = db.session.execute(stmt).scalar()
+        if user.id == current_user.id:
+            flash('User cannot delete this account')
+            return redirect(url_for('manage_admin'))
+        elif user:
+            db.session.delete(user)
+            db.session.commit()
+    return redirect(url_for('manage_admin'))
+
+
 
 
 if __name__ == '__main__':

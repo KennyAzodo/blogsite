@@ -45,17 +45,17 @@
       <!-- left sidebar -->
       <div class="left-sidebar">
         <ul>
-          <li><a href="#">Manage Post</a></li>
-          <li><a href="#">Manage Users</a></li>
-          <li><a href="#">Manage Topics</a></li>
+
+          <li><a href="{{ url_for('manage_admin') }}">Manage Users</a></li>
+          <
         </ul>
       </div>
       <!-- left sidebar end -->
        <!-- Admin content -->
         <div class="admin-content">
           <div class="button-group">
-            <a href="create.html" class="btn btn-big">Add User</a>
-            <a href="index.html" class="btn btn-big">Manage User's</a>
+
+            <a href="{{ url_for('manage_admin') }}" class="btn btn-big">Manage Users</a>
           </div>
     {% with messages = get_flashed_messages(with_categories=True) %}
         {% if messages %}

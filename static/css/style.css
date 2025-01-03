@@ -795,3 +795,7 @@ flex-direction: row;
     display: flex;
     flex-direction: column;
 }
+.like_btn{
+    font-size: 2rem;
+    margin-bottom: 10px;
+}

@@ -10,8 +10,8 @@
       crossorigin="anonymous"
     ></script>
 
-    <link rel="stylesheet" href="../../css/style.css" />
-        <link rel="stylesheet" href="../../css/admin.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+       <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}" />
 
     <!--CUSTOM STYLING-->
 
@@ -44,18 +44,26 @@
       <!-- left sidebar -->
       <div class="left-sidebar">
         <ul>
-          <li><a href="../posts/index.html">Manage Post</a></li>
-          <li><a href="index.html">Manage Users</a></li>
-          <li><a href="../topics/index.html">Manage Topics</a></li>
+
+          <li><a href="{{ url_for('manage_admin') }}">Manage Users</a></li>
+
         </ul>
       </div>
       <!-- left sidebar end -->
        <!-- Admin content -->
-        <div class="admin-content">
-          <div class="button-group">
-            <a href="create.html" class="btn btn-big">Add User</a>
-            <a href="index.html" class="btn btn-big">Manage Users</a>
-          </div>
+
+
+
+
+            {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="category">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
 
 
           <div class="content">
@@ -70,20 +78,44 @@
 
               <tbody>
                 <tr>
-                  <td>1</td>
-                  <td>Kenny</td>
-                  <td>Admin</td>
-                  <td><a href="#" class="edit">edit</a></td>
-                  <td><a href="#" class="delete">delete</a></td>
-                </tr>
 
-                <tr>
-                  <td>2</td>
-                  <td>Trevor</td>
-                  <td>Author</td>
-                  <td><a href="#" class="edit">edit</a></td>
-                  <td><a href="#" class="delete">delete</a></td>
+            {% if admins %}
+
+            {% for admin in admins %}
+
+
+                  <td></td>
+                  <td>{{ admin.username }}</td>
+
+                  <td><a href="#" class="edit">Admin</a></td>
+                  <td><form action="{{ url_for('delete_user', user_id=admin.id) }}" method="POST" style="display:inline; color: black">
+    <button type="submit" class="delete">Delete user</button>
+</form></td>
                 </tr>
+                {% endfor %}
+                {% endif %}
+
+
+               {% if non_admins %}
+
+            {% for user in non_admins %}
+
+              <tr>
+                  <td></td>
+                  <td>{{ user.username }}</td>
+
+                  <td><a href="#" class="edit">User</a></td>
+
+                  <td><form action="{{ url_for('delete_user', user_id=user.id) }}" method="POST" style="display:inline;">
+
+    <button type="submit" class="delete">Delete user</button>
+</form>
+</td>
+                </tr>
+                {% endfor %}
+              {% endif %}
+
+
               </tbody>
             </table>
           </div>
