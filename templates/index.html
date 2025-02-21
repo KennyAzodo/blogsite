@@ -11,6 +11,29 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 
     <title>Blog</title>
+    <style>
+        @media screen and (max-width: 768px) {
+    .side-bar {
+        display: none;
+    }
+     .flexthis {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .post {
+        width: 90%; /* Adjust width to fit the screen */
+        max-width: 600px; /* Limit maximum width */
+        text-align: center; /* Center text */
+    }
+}
+        .texts{
+            color:white;
+            line-height: 1.6
+        }
+
+    </style>
 </head>
 <body>
     <!-- HEADER -->
@@ -126,9 +149,9 @@
         <div class="footer-content">
             <div class="footer-section about">
                 <h1 class="logo-text"><span>Mars</span>Media</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae voluptatibus minima harum tenetur a maxime.</p>
+                <p class="texts">At Taurus Tech, we prioritize your privacy and protect any data you share with us. Information is collected only to enhance your experience and is never shared without consent. Our content, including text, images, and designs, is owned by Taurus Tech and protected by copyright laws. Unauthorized use, reproduction, or distribution is prohibited without written permission. By using our services, you agree to these terms.</p>
                 <div class="contact">
-                    <span><i class="fa-solid fa-phone"></i>&nbsp; 123-456-789</span>
+                    <span><i class="fa-solid fa-phone"></i>&nbsp; +2348054740552 </span>
                     <span><i class="fa-solid fa-envelope"></i>&nbsp; info@taurustech</span>
                 </div>
                 <div class="socials">

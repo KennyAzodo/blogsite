@@ -17,6 +17,44 @@
     <!--CUSTOM STYLING-->
 
     <title>Admin Section - Add User</title>
+      <style>
+      @media screen and (max-width: 768px) {
+    .admin-wrapper {
+        flex-direction: column; /* Stack sidebar and content */
+    }
+
+    .admin-wrapper .left-sidebar {
+        width: 100%; /* Full width */
+        height: auto; /* Allow it to adjust naturally */
+        text-align: center;
+        padding: 10px 0; /* Add some spacing */
+    }
+
+    .admin-wrapper .left-sidebar ul {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap; /* Wrap items if necessary */
+    }
+
+    .admin-wrapper .left-sidebar ul li {
+        display: inline-block; /* Make list items inline */
+        margin: 5px 10px; /* Add spacing */
+    }
+
+    .admin-wrapper .left-sidebar ul li a {
+        padding: 10px 15px; /* Reduce padding */
+        font-size: 14px; /* Adjust font size */
+    }
+
+    .admin-wrapper .admin-content {
+        width: 100%; /* Full width */
+        padding: 20px; /* Reduce padding */
+        overflow-y: auto; /* Ensure content is scrollable */
+    }
+}
+
+
+      </style>
   </head>
   <body>
     <header>
@@ -45,18 +83,16 @@
       <!-- left sidebar -->
       <div class="left-sidebar">
         <ul>
-
           <li><a href="{{ url_for('manage_admin') }}">Manage Users</a></li>
-          <
         </ul>
       </div>
       <!-- left sidebar end -->
        <!-- Admin content -->
         <div class="admin-content">
-          <div class="button-group">
+         <div class="btn_class">
+            <a href="{{ url_for('manage_admin') }}" class="btn btn-big">Manage users</a>
+             <div>
 
-            <a href="{{ url_for('manage_admin') }}" class="btn btn-big">Manage Users</a>
-          </div>
     {% with messages = get_flashed_messages(with_categories=True) %}
         {% if messages %}
             <ul>
