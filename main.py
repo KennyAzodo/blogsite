@@ -23,7 +23,6 @@ login_manager = LoginManager(app)
 login_manager.init_app(app)
 bootstrap = Bootstrap5(app)
 login_manager.login_view = 'login'  # Redirect to 'login' view if not logged in
-
 # Configure the database URI
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///example.db'  # Replace with your database URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
