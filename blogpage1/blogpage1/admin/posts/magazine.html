@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>magazine</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="./css/snap.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="friends-section">
+          <h2>Friends</h2>
+          <div class="friend-stories">
+            <div class="story">David</div>
+            <div class="story">Ella</div>
+            <div class="story">Ella</div>
+            <div class="story">Gracy</div>
+          </div>
+        </div>
+      </header>
+
+      <section class="following-section">
+        <h2>Following</h2>
+        <div class="following-items">
+          <div class="item" onclick="showPopup()">Nwaka ⭐</div>
+          <div class="item" onclick="showPopup()">Efe Omo</div>
+          <div class="item" onclick="showPopup()">kenechukwu ⭐</div>
+        </div>
+      </section>
+
+      <section class="following-section">
+        <h2>Following</h2>
+        <div class="following-items">
+          <div class="item" onclick="showPopup()">Mr Nwafor ⭐</div>
+          <div class="item" onclick="showPopup()">Efe Omo</div>
+          <div class="item" onclick="showPopup()">Nyemego ⭐</div>
+        </div>
+      </section>
+
+      <footer>
+        <div class="icons">
+          <div class="icon"></div>
+          <div class="icon"></div>
+          <div class="icon" onclick="showPopup()"></div>
+          <div class="icon"></div>
+          <div class="icon"></div>
+        </div>
+      </footer>
+    </div>
+
+    <div class="popup" id="popup">
+      <div class="popup-content">
+        <span class="close-btn" onclick="hidePopup()">×</span>
+        <div class="media">
+          <img src="image1.jpg" alt="Image 1" />
+          <img src="image2.jpg" alt="Image 2" />
+          <img src="image3.jpg" alt="Image 3" />
+          <video src="video1.mp4" controls></video>
+          <video src="video2.mp4" controls></video>
+        </div>
+      </div>
+    </div>
+
+    <script src="./js/snap.js"></script>
+  </body>
+</html>
